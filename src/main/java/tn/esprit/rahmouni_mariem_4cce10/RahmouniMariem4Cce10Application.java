@@ -1,10 +1,11 @@
 package tn.esprit.rahmouni_mariem_4cce10;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -19,6 +20,9 @@ import java.math.BigDecimal;
 @SpringBootApplication
 public class RahmouniMariem4Cce10Application {
 
+    private static final Logger logger =
+            LoggerFactory.getLogger(RahmouniMariem4Cce10Application.class);
+
     public static void main(String[] args) {
         SpringApplication.run(RahmouniMariem4Cce10Application.class, args);
     }
@@ -32,7 +36,8 @@ public class RahmouniMariem4Cce10Application {
             // =========================
             Vehicule vehicule = new Vehicule();
 
-            vehicule.setImmatricula("555 TU 2026");            vehicule.setMarque("Toyota");
+            vehicule.setImmatricula("555 TU 2026");
+            vehicule.setMarque("Toyota");
             vehicule.setModel("Yaris");
             vehicule.setCategorie(CategorieVehicule.CITADINE);
             vehicule.setTarifJournalier(new BigDecimal("120.00"));
@@ -40,12 +45,12 @@ public class RahmouniMariem4Cce10Application {
 
             Vehicule saved = vehiculeRepository.save(vehicule);
 
-            System.out.println("\n========== VEHICULE CREE ==========");
-            System.out.println("ID : " + saved.getIdVehicule());
-            System.out.println("Immatriculation : " + saved.getImmatricula());
-            System.out.println("Marque : " + saved.getMarque());
-            System.out.println("Modèle : " + saved.getModel());
-            System.out.println("===================================\n");
+            logger.info("========== VEHICULE CREE ==========");
+            logger.info("ID : {}", saved.getIdVehicule());
+            logger.info("Immatriculation : {}", saved.getImmatricula());
+            logger.info("Marque : {}", saved.getMarque());
+            logger.info("Modèle : {}", saved.getModel());
+            logger.info("===================================");
 
 
             // =========================
@@ -53,31 +58,34 @@ public class RahmouniMariem4Cce10Application {
             // =========================
             Vehicule vehiculeTrouve = vehiculeRepository
                     .findById(saved.getIdVehicule())
-                    .orElseThrow(() -> new RuntimeException("Vehicule non trouvé"));
+                    .orElseThrow(() ->
+                            new RuntimeException("Vehicule non trouvé"));
 
-            System.out.println("========== VEHICULE TROUVE ==========");
-            System.out.println("ID : " + vehiculeTrouve.getIdVehicule());
-            System.out.println("Immatriculation : " + vehiculeTrouve.getImmatricula());
-            System.out.println("Marque : " + vehiculeTrouve.getMarque());
-            System.out.println("Modèle : " + vehiculeTrouve.getModel());
-            System.out.println("=====================================\n");
+            logger.info("========== VEHICULE TROUVE ==========");
+            logger.info("ID : {}", vehiculeTrouve.getIdVehicule());
+            logger.info("Immatriculation : {}",
+                    vehiculeTrouve.getImmatricula());
+            logger.info("Marque : {}", vehiculeTrouve.getMarque());
+            logger.info("Modèle : {}", vehiculeTrouve.getModel());
+            logger.info("=====================================");
 
 
             // =========================
             // 3. FIND ALL
             // =========================
-            System.out.println("========== TOUS LES VEHICULES ==========");
+            logger.info("========== TOUS LES VEHICULES ==========");
 
-            vehiculeRepository.findAll().forEach(v -> {
-                System.out.println(
-                        "ID : " + v.getIdVehicule()
-                                + " | Immatriculation : " + v.getImmatricula()
-                                + " | Marque : " + v.getMarque()
-                                + " | Modèle : " + v.getModel()
-                );
-            });
+            vehiculeRepository.findAll().forEach(v ->
+                    logger.info(
+                            "ID : {} | Immatriculation : {} | Marque : {} | Modèle : {}",
+                            v.getIdVehicule(),
+                            v.getImmatricula(),
+                            v.getMarque(),
+                            v.getModel()
+                    )
+            );
 
-            System.out.println("=========================================\n");
+            logger.info("=========================================");
 
 
             // =========================
@@ -89,13 +97,14 @@ public class RahmouniMariem4Cce10Application {
 
             Vehicule updated = vehiculeRepository.save(vehiculeTrouve);
 
-            System.out.println("========== VEHICULE MODIFIE ==========");
-            System.out.println("ID : " + updated.getIdVehicule());
-            System.out.println("Immatriculation : " + updated.getImmatricula());
-            System.out.println("Marque : " + updated.getMarque());
-            System.out.println("Modèle : " + updated.getModel());
-            System.out.println("Tarif : " + updated.getTarifJournalier());
-            System.out.println("======================================\n");
+            logger.info("========== VEHICULE MODIFIE ==========");
+            logger.info("ID : {}", updated.getIdVehicule());
+            logger.info("Immatriculation : {}",
+                    updated.getImmatricula());
+            logger.info("Marque : {}", updated.getMarque());
+            logger.info("Modèle : {}", updated.getModel());
+            logger.info("Tarif : {}", updated.getTarifJournalier());
+            logger.info("======================================");
 
 
             // =========================
@@ -103,57 +112,72 @@ public class RahmouniMariem4Cce10Application {
             // =========================
             vehiculeRepository.deleteById(updated.getIdVehicule());
 
-            System.out.println("========== VEHICULE SUPPRIME ==========");
-            System.out.println("Véhicule avec ID "
-                    + updated.getIdVehicule()
-                    + " supprimé.");
-            System.out.println("=======================================\n");
+            logger.info("========== VEHICULE SUPPRIME ==========");
+            logger.info(
+                    "Véhicule avec ID {} supprimé.",
+                    updated.getIdVehicule()
+            );
+            logger.info("=======================================");
 
 
             // =========================
             // 6. TRI PAR MARQUE
             // =========================
-            System.out.println("========== VEHICULES TRIES PAR MARQUE ==========");
+            logger.info(
+                    "========== VEHICULES TRIES PAR MARQUE =========="
+            );
 
             vehiculeRepository.findAll(Sort.by("marque"))
-                    .forEach(v -> {
-                        System.out.println(
-                                "ID : " + v.getIdVehicule()
-                                        + " | Marque : " + v.getMarque()
-                                        + " | Modèle : " + v.getModel()
-                        );
-                    });
+                    .forEach(v ->
+                            logger.info(
+                                    "ID : {} | Marque : {} | Modèle : {}",
+                                    v.getIdVehicule(),
+                                    v.getMarque(),
+                                    v.getModel()
+                            )
+                    );
 
-            System.out.println("===============================================\n");
+            logger.info("===============================================");
 
 
             // =========================
             // 7. PAGINATION
             // =========================
-            System.out.println("========== PAGINATION ==========");
+            logger.info("========== PAGINATION ==========");
 
             Page<Vehicule> page = vehiculeRepository.findAll(
-                    PageRequest.of(0, 2, Sort.by("marque"))
+                    PageRequest.of(
+                            0,
+                            2,
+                            Sort.by("marque")
+                    )
             );
 
-            System.out.println("Nombre de véhicules dans la page : "
-                    + page.getNumberOfElements());
+            logger.info(
+                    "Nombre de véhicules dans la page : {}",
+                    page.getNumberOfElements()
+            );
 
-            System.out.println("Page actuelle : "
-                    + (page.getNumber() + 1));
+            logger.info(
+                    "Page actuelle : {}",
+                    page.getNumber() + 1
+            );
 
-            System.out.println("Nombre total de pages : "
-                    + page.getTotalPages());
+            logger.info(
+                    "Nombre total de pages : {}",
+                    page.getTotalPages()
+            );
 
-            page.getContent().forEach(v -> {
-                System.out.println(
-                        "ID : " + v.getIdVehicule()
-                                + " | Marque : " + v.getMarque()
-                                + " | Modèle : " + v.getModel()
-                );
-            });
+            page.getContent().forEach(v ->
+                    logger.info(
+                            "ID : {} | Marque : {} | Modèle : {}",
+                            v.getIdVehicule(),
+                            v.getMarque(),
+                            v.getModel()
+                    )
+            );
 
-            System.out.println("===============================\n");
+            logger.info("===============================");
         };
     }
 }
