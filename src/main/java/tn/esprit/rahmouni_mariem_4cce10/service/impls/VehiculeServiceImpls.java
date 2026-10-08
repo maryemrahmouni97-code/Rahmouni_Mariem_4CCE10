@@ -1,11 +1,9 @@
 package tn.esprit.rahmouni_mariem_4cce10.service.impls;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tn.esprit.rahmouni_mariem_4cce10.Repositry.IVehiculeRepository;
+import tn.esprit.rahmouni_mariem_4cce10.repository.IVehiculeRepository;
 import tn.esprit.rahmouni_mariem_4cce10.domain.Vehicule;
 import tn.esprit.rahmouni_mariem_4cce10.service.IVehiculeServices;
 
