@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class VehiculeServiceImpls implements IVehiculeServices {
 
-    private IVehiculeRepository vehiculeRepository;
+    private final IVehiculeRepository vehiculeRepository;
 
 
     public Vehicule create(Vehicule vehicule) {
@@ -26,7 +26,7 @@ public class VehiculeServiceImpls implements IVehiculeServices {
 
     @Override
     public List<Vehicule> findAll() {
-        return List.of();
+        return vehiculeRepository.findAll();
     }
 
     @Override
